@@ -1,0 +1,25 @@
+project:
+    name: 
+instance:
+    name: dev
+    runtime: nodejs16
+    region: aws.use1
+    application-id: 
+    environment:
+        - name: API_KEY
+          secret: API_KEY
+        - name: API_SECRET
+          secret: API_SECRET
+        - name: LOGIN_PIN
+          secret: LOGIN_PIN
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          secret: GOOGLE_APPLICATION_CREDENTIALS
+    entrypoint:
+        - node
+        - server.js
+debug:
+    name: debug
+    entrypoint:
+        - nodemon
+        - --inspect
+        - server.js
