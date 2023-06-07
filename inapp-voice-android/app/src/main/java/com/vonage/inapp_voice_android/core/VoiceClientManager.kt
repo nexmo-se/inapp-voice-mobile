@@ -55,6 +55,10 @@ class VoiceClientManager(private val context: Context) {
     private fun setClientListeners(){
 
         client.setSessionErrorListener { err ->
+            coreContext.activeCall?.run {
+                selfDestroy()
+                clearActiveCall()
+            }
             when(err){
                 SessionErrorReason.TransportClosed -> notifySessionErrorToCallActivity(context, "Session Error: TransportClosed")
                 SessionErrorReason.TokenExpired -> notifySessionErrorToCallActivity(context, "Session Error: TokenExpired")
@@ -133,6 +137,7 @@ class VoiceClientManager(private val context: Context) {
             println("LegId $legId has sent DTMF digits '$digits' to Call $callId")
         }
     }
+
     fun login(user: User, onSuccessCallback: ((String) -> Unit)? = null, onErrorCallback: (() -> Unit)? = null){
         initClient(user)
         client.createSession(user.token){ error, sessionId ->

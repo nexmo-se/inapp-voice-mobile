@@ -72,6 +72,13 @@ extension VonageClient: VGVoiceClientDelegate {
             statusText = "Session Unknown Error"
         }
         
+        if let currentCallStatus = currentCallStatus {
+            if (currentCallStatus.state == .ringing || currentCallStatus.state == .answered) {
+                self.currentCallStatus = CallStatusModel(uuid: currentCallStatus.uuid, state: .completed(remote: true, reason: .failed), type: currentCallStatus.type, member: currentCallStatus.member, message: nil)
+            }
+        }
+     
+
         NotificationCenter.default.post(name: .clientStatus, object: VonageClientStatusModel(state: .disconnected, message: statusText))
     }
 }
