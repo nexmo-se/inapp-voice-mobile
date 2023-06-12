@@ -49,7 +49,7 @@ const WEBSOCKET = {
   APAC:	"wss://ws-ap-3.vonage.com"
 }
 
-const BUSY_STATE = ['started', 'ringing', 'answered']
+const BUSY_STATE = ['answered']
 const IDLE_STATE = ['busy', 'cancelled', 'unanswered', 'disconnected', 'rejected', 'failed', 'timeout', 'completed']
 
 const BUSY_CONV_STATE_KEY = 'busyConv'
@@ -483,7 +483,7 @@ app.get('/voice/answer', async (req, res) => {
         let busyConvJson = JSON.parse(busyConv)
         let existBusyUsers = busyConvJson.findIndex((conv) => conv.conversationId == req.query.conversation_uuid)
         if (existBusyUsers > -1) {
-          busyConvJson[existBusyUsers][users] = data.users
+          busyConvJson[existBusyUsers]['users'] = data.users
         }
         else {
           busyConvJson.push(data)
@@ -518,10 +518,17 @@ app.all('/voice/event', async (req, res) => {
           notifyUsers(region)
         }
         else if (req.body.status && IDLE_STATE.includes(req.body.status.toLowerCase())) {
+          let notifyUser = true
+          if (!busyConvJson[index]['users']) {
+            notifyUser = false
+          }
+
           busyConvJson.splice(index, 1);
           await instanceState.hset(BUSY_CONV_STATE_KEY, { [region]: JSON.stringify(busyConvJson) });
           // Notify frontend
-          notifyUsers(region)
+          if (notifyUser) {
+            notifyUsers(region)
+          }
         }
       }
     }

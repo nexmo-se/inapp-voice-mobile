@@ -16,10 +16,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4bb3e6f8-68e0-46e1-9283-bcfb58daf17b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../backend/public/vonage-inapp-voice.apk" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/public/vonage-inapp-voice.apk" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/vonage/inapp_voice_android/core/VoiceClientManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/vonage/inapp_voice_android/core/VoiceClientManager.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/vonage/inapp_voice_android/views/fragments/FragmentIdleCall.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/vonage/inapp_voice_android/views/fragments/FragmentIdleCall.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../inapp-voice/inapp-voice.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/../inapp-voice/inapp-voice.xcodeproj/project.pbxproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../inapp-voice/inapp-voice.xcworkspace/xcuserdata/iujie.xcuserdatad/UserInterfaceState.xcuserstate" beforeDir="false" afterPath="$PROJECT_DIR$/../inapp-voice/inapp-voice.xcworkspace/xcuserdata/iujie.xcuserdatad/UserInterfaceState.xcuserstate" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../inapp-voice/inapp-voice/Controllers/CallViewController.swift" beforeDir="false" afterPath="$PROJECT_DIR$/../inapp-voice/inapp-voice/Controllers/CallViewController.swift" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

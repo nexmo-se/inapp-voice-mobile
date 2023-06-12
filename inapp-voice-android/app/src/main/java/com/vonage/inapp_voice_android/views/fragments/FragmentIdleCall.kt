@@ -151,7 +151,7 @@ class FragmentIdleCall: Fragment(R.layout.fragment_idlecall) {
             override fun onFailure(call: Call<Members>, t: Throwable) {
                 isMembersLoading = false
                 if (context !== null) {
-                    showAlert(context!!, "Failed to Load Members", false)
+                    showToast(context!!, "Failed to Load Members")
                 }
             }
 

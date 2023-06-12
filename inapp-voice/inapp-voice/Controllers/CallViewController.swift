@@ -268,12 +268,8 @@ extension CallViewController: MembersManagerDelegate {
             if (self == nil) {return}
             
             self!.isMembersLoading = false
-            let alert = createAlert(message: message) { isActionSubmitted in
-                if (isActionSubmitted) {
-                    self!.dismiss(animated: true, completion: nil)
-                }
-            }
-            self!.present(alert, animated: true, completion: nil)
+            
+            self!.showToast(message: message, font: .systemFont(ofSize: 12.0))
         }
     }
 }
