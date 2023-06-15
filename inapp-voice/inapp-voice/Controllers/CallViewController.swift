@@ -6,6 +6,16 @@
 //
 
 import UIKit
+import AVFoundation
+
+enum AudioRoute: Int {
+    case Headphones
+    case Speaker
+    case Bluetooth
+    case Receiver
+    case None
+}
+
 
 class CallViewController: UIViewController {
     
@@ -22,9 +32,12 @@ class CallViewController: UIViewController {
     @IBOutlet weak var callMemberLabel: UILabel!
     @IBOutlet weak var callStatusLabel: UILabel!
     @IBOutlet weak var ringingStackView: UIStackView!
+    @IBOutlet weak var answeredStackView: UIStackView!
     @IBOutlet weak var answerButton: UIButton!
     @IBOutlet weak var rejectButton: UIButton!
     @IBOutlet weak var hangupButton: UIButton!
+    @IBOutlet weak var micButton: UIButton!
+    @IBOutlet weak var speakerButton: UIButton!
     
     var user: UserModel!
     var userManager = UserManager()
@@ -33,6 +46,12 @@ class CallViewController: UIViewController {
     var memberList: MemberModel!
     var membersManager = MembersManager()
     var memberSearchResult = [String]()
+    
+    var activeOutput: AudioRoute = .None {
+        didSet {
+            displayActiveOutput(activeOutput: activeOutput)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,7 +84,13 @@ class CallViewController: UIViewController {
         rejectButton.layer.cornerRadius = Constants.borderRadius
         callButton.layer.cornerRadius = Constants.borderRadius
         hangupButton.layer.cornerRadius = Constants.borderRadius
+        speakerButton.layer.cornerRadius = Constants.borderRadius
+        micButton.layer.cornerRadius = Constants.borderRadius
+        displayMicState(isMuted: appDelegate.vgclient.isMuted)
         
+        speakerButton.menu = generateAudioOutputMenu()
+        speakerButton.showsMenuAsPrimaryAction = true
+
         // Initial View - Members
         memberSearchTextField.delegate = self
         memberTableView.dataSource = self
@@ -85,6 +110,10 @@ class CallViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(callReceived(_:)), name: .callStatus, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateCallMembersStatus(_:)), name: .updateCallMembersStatus, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateMic(_:)), name: .micState, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(handleAudioRouteChange), name: AVAudioSession.routeChangeNotification, object: nil)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -114,8 +143,8 @@ class CallViewController: UIViewController {
             self!.activeCallStackView.isHidden = false
             
             self!.ringingStackView.isHidden = true
-            self!.hangupButton.isHidden = false
-            
+            self!.answeredStackView.isHidden = false
+                        
             if (member != nil) {
                 self!.callMemberLabel.text = member
             }
@@ -125,9 +154,8 @@ class CallViewController: UIViewController {
                 
                 if (type == .inbound) {
                     self!.ringingStackView.isHidden = false
-                    self!.hangupButton.isHidden = true
+                    self!.answeredStackView.isHidden = true
                 }
-                
             }
             if (state == .answered) {
                 self!.callStatusLabel.text = "Answered"
@@ -155,6 +183,8 @@ class CallViewController: UIViewController {
     
     private func disableActionButtons() {
         hangupButton.isEnabled = false
+        micButton.isEnabled = false
+        speakerButton.isEnabled = false
         answerButton.isEnabled = false
         rejectButton.isEnabled = false
         callButton.isEnabled = false
@@ -162,11 +192,42 @@ class CallViewController: UIViewController {
     
     private func enableActionButton() {
         hangupButton.isEnabled = true
+        micButton.isEnabled = true
+        speakerButton.isEnabled = true
         answerButton.isEnabled = true
         rejectButton.isEnabled = true
         callButton.isEnabled = true
     }
+    private func displayMicState(isMuted: Bool) {
+        if (isMuted) {
+            micButton.tintColor = .black
+        }
+        else {
+            micButton.tintColor = .systemGray3
+        }
+    }
     
+    private func displayActiveOutput(activeOutput: AudioRoute) {
+        speakerButton.tintColor = .black
+        
+        switch activeOutput {
+        case .Headphones:
+            speakerButton.setImage(UIImage(systemName: "headphones"), for: .normal)
+            speakerButton.setTitle("Headphone", for: .normal)
+        case .Speaker:
+            speakerButton.setImage(UIImage(systemName: "speaker.wave.2.fill"), for: .normal)
+            speakerButton.setTitle("Speaker", for: .normal)
+        case .Receiver:
+            speakerButton.setImage(UIImage(systemName: "iphone"), for: .normal)
+            speakerButton.setTitle("iPhone", for: .normal)
+        case .Bluetooth:
+            speakerButton.setImage(UIImage(systemName: "airpods"), for: .normal)
+            speakerButton.setTitle("Bluetooth", for: .normal)
+        case .None:
+            speakerButton.tintColor = .systemGray3
+        }
+    }
+
     private func logout() {
         if let user = user {
             userManager.deleteUser(user: user)
@@ -212,6 +273,32 @@ extension CallViewController {
             }
         }
     }
+    
+    @objc func updateMic(_ notification: NSNotification) {
+        if let isMuted = notification.object as? Bool {
+            DispatchQueue.main.async { [weak self] in
+                if (self == nil) {return}
+                self!.displayMicState(isMuted: isMuted)
+            }
+        }
+    }
+    
+    @objc func handleAudioRouteChange(_ notification: NSNotification) {
+        guard let userInfo = notification.userInfo,
+             let reasonValue = userInfo[AVAudioSessionRouteChangeReasonKey] as? UInt,
+             let reason = AVAudioSession.RouteChangeReason(rawValue: reasonValue) else {
+                 return
+         }
+         
+         switch reason {
+         case .newDeviceAvailable: // New device found.
+             speakerButton.menu = generateAudioOutputMenu()
+         case .oldDeviceUnavailable: // Old device removed.
+             speakerButton.menu = generateAudioOutputMenu()
+
+         default: ()
+         }
+    }
 }
 
 //MARK: Actions
@@ -244,6 +331,107 @@ extension CallViewController {
     @IBAction func hangupCallClicked(_ sender: Any) {
         disableActionButtons()
         appDelegate.vgclient.hangUpCall(callId: appDelegate.vgclient.currentCallStatus?.uuid?.toVGCallID())
+    }
+
+    @IBAction func micButtonClicked(_ sender: Any) {
+        appDelegate.vgclient.toggleMute(calluuid: appDelegate.vgclient.currentCallStatus?.uuid)
+    }
+    
+    func generateAudioOutputMenu() -> UIMenu {
+        // Pull active audio output
+        let availableAudioPorts = AVAudioSession.sharedInstance().availableInputs
+        let currentOutput = AVAudioSession.sharedInstance().currentRoute.outputs
+        
+        var headphonesExist = false
+        var builtInAudioDevice: AVAudioSessionPortDescription? = nil
+        
+        var menuActions: [UIAction] = []
+        for audioPort in availableAudioPorts! {
+            switch audioPort.portType {
+                case AVAudioSession.Port.bluetoothA2DP, AVAudioSession.Port.bluetoothHFP, AVAudioSession.Port.bluetoothLE :
+                    if (currentOutput.contains(where: {return $0.portType == audioPort.portType})) {
+                        activeOutput = .Bluetooth
+                    }
+                menuActions.append(UIAction(title: audioPort.portName, image: UIImage(systemName: "airpods"), state: currentOutput.contains(where: {return $0.portType == audioPort.portType}) ? .on : .off) { (action) in
+                                do {
+                                    try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.none)
+                                    self.speakerButton.menu = nil
+                                    self.speakerButton.menu = self.generateAudioOutputMenu()
+
+                                } catch {
+                                    print("\(String(describing: error))")
+                                }
+                            })
+                    break
+                case AVAudioSession.Port.builtInMic, AVAudioSession.Port.builtInReceiver:
+                    builtInAudioDevice = audioPort
+                    break
+                case AVAudioSession.Port.headphones, AVAudioSession.Port.headsetMic:
+                    headphonesExist = true
+                    if (currentOutput.contains(where: {return $0.portType == AVAudioSession.Port.headphones}) || currentOutput.contains(where: {return $0.portType == AVAudioSession.Port.headsetMic})) {
+                        activeOutput = .Headphones
+                    }
+                    
+                    menuActions.append(UIAction(title: audioPort.portName, image: UIImage(systemName: "headphones"), state:  currentOutput.contains(where: {return $0.portType == AVAudioSession.Port.headphones}) || currentOutput.contains(where: {return $0.portType == AVAudioSession.Port.headsetMic}) ? .on : .off) { (action) in
+                                do {
+                                    try AVAudioSession.sharedInstance().setPreferredInput(audioPort)
+                                    self.speakerButton.menu = nil
+                                    self.speakerButton.menu = self.generateAudioOutputMenu()
+                                } catch {
+                                    print("\(String(describing: error))")
+                                }
+                        })
+                    break
+                default:
+                    break
+            }
+
+        }
+        
+        // Add iPhone
+        if !headphonesExist && builtInAudioDevice != nil {
+            
+            if (currentOutput.contains(where: {return $0.portType == AVAudioSession.Port.builtInReceiver}) || currentOutput.contains(where: {return $0.portType == AVAudioSession.Port.builtInMic})) {
+                activeOutput = .Receiver
+            }
+            
+            menuActions.append(UIAction(title: "iPhone", image: UIImage(systemName: "iphone"), state: currentOutput.contains(where: {return $0.portType == AVAudioSession.Port.builtInReceiver}) || currentOutput.contains(where: {return $0.portType == AVAudioSession.Port.builtInMic}) ? .on : .off) { (action) in
+                    do {
+                        // remove speaker if needed
+                        try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.none)
+                        // set new input
+                        try AVAudioSession.sharedInstance().setPreferredInput(builtInAudioDevice)
+                        self.speakerButton.menu = nil
+                        self.speakerButton.menu = self.generateAudioOutputMenu()
+                    } catch {
+                        print("\(String(describing: error))")
+                    }
+                })
+         }
+        
+        
+        // Add Speaker
+        if (currentOutput.contains(where: {return $0.portType == AVAudioSession.Port.builtInSpeaker})) {
+            activeOutput = .Speaker
+        }
+        menuActions.append(UIAction(title: "Speaker", image: UIImage(systemName: "speaker.wave.2.fill"), state: currentOutput.contains(where: {return $0.portType == AVAudioSession.Port.builtInSpeaker})  ? .on : .off) { (action) in
+            do {
+                try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
+                self.speakerButton.menu = nil
+                self.speakerButton.menu = self.generateAudioOutputMenu()
+
+            } catch {
+                print("\(String(describing: error))")
+            }
+        })
+                
+//        let menu = UIMenu(title: "Audio Output", options: .displayInline, children: menuActions)
+        let menu = UIMenu(title: "Audio Output", children: [UIDeferredMenuElement({completion in
+            completion([UIMenu(title: "", options: UIMenu.Options.displayInline, children: menuActions)])
+//            self.speakerButton.menu = self.generateAudioOutputMenu()
+            })
+        ])
+        return menu
     }
     
     @IBAction func onLogoutButtonClicked(_ sender: Any) {

@@ -22,6 +22,11 @@ class VonageClient: NSObject {
     var voiceClient = VGVoiceClient()
     var user: UserModel?
     var isLoggedIn: Bool = false
+    var isMuted: Bool = false {
+        didSet {
+            NotificationCenter.default.post(name:.micState, object: isMuted)
+        }
+    }
 
     var currentCallStatus: CallStatusModel? {
         didSet {
@@ -245,6 +250,18 @@ class VonageClient: NSObject {
             }
         }
         
+    }
+    
+    func toggleMute(calluuid: UUID?) {
+        if let calluuid = calluuid {
+            let muteCallAction = CXSetMutedCallAction(call: calluuid, muted: !isMuted)
+            self.cxController.requestTransaction(with: muteCallAction) { error in
+                guard error == nil else {
+                    print("cx unmute error")
+                    return
+                }
+            }
+        }
     }
     
     func updateCallKit(call: CallStatusModel) {
