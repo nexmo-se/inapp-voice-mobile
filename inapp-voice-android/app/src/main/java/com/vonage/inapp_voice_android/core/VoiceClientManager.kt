@@ -156,13 +156,15 @@ class VoiceClientManager(private val context: Context) {
 
     fun logout(onSuccessCallback: (() -> Unit)? = null){
         unregisterDevicePushToken(coreContext.user)
-        coreContext.sessionId = null
         coreContext.user = null
-        client.deleteSession { error ->
-            error?.let {
-                showToast(context, "Error Logging Out: ${error.message}")
-            } ?: run {
-                onSuccessCallback?.invoke()
+        if (coreContext.sessionId != null) {
+            coreContext.sessionId = null
+            client.deleteSession { error ->
+                error?.let {
+                    showToast(context, "Error Logging Out: ${error.message}")
+                } ?: run {
+                    onSuccessCallback?.invoke()
+                }
             }
         }
     }

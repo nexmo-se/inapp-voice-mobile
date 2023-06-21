@@ -68,7 +68,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCallUser"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintHeight_max="150dp"
+        app:layout_constraintHeight_min="30dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintStart_toStartOf="parent"

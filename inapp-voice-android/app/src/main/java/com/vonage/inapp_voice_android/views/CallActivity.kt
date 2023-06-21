@@ -270,6 +270,7 @@ class CallActivity : AppCompatActivity() {
 
     private fun handleSessionError(message: String) {
         showAlert(this@CallActivity, message, true)
+        coreContext.sessionId = null
         logout()
     }
 //    private fun toggleMute() : Boolean{

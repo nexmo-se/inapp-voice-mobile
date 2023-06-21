@@ -6,16 +6,27 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/clMembers">
+    <ImageView
+        android:id="@+id/ivMemberState"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvMemberName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/inactive_circle"
+        >
+    </ImageView>
     <TextView
         android:id="@+id/tvMemberName"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:textColor="@color/black"
         android:textSize="18sp"
+        android:layout_marginStart="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ivMemberState"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/username">
     </TextView>

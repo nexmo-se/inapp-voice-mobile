@@ -15,14 +15,12 @@ import com.vonage.inapp_voice_android.R
 import com.vonage.inapp_voice_android.adaptors.MembersRecyclerAdaptor
 import com.vonage.inapp_voice_android.api.APIRetrofit
 import com.vonage.inapp_voice_android.api.MemberInformation
-import com.vonage.inapp_voice_android.core.CoreContext
 import com.vonage.inapp_voice_android.databinding.FragmentIdlecallBinding
 import com.vonage.inapp_voice_android.models.FcmEvents
+import com.vonage.inapp_voice_android.models.MemberState
 import com.vonage.inapp_voice_android.models.Members
 import com.vonage.inapp_voice_android.models.User
 import com.vonage.inapp_voice_android.utils.Constants
-import com.vonage.inapp_voice_android.utils.contains
-import com.vonage.inapp_voice_android.utils.showAlert
 import com.vonage.inapp_voice_android.utils.showToast
 import retrofit2.Call
 import retrofit2.Callback
@@ -35,9 +33,9 @@ class FragmentIdleCall: Fragment(R.layout.fragment_idlecall) {
     private val coreContext = App.coreContext
     private val clientManager = coreContext.clientManager
     private var isMembersLoading = false
-    private var members = ArrayList<String>()
+    private var members = Members(MemberState(ArrayList<String>(), ArrayList<String>())).members
     private var filteredMembers = ArrayList<String>()
-    private val membersAdaptor = MembersRecyclerAdaptor(filteredMembers);
+    private val membersAdaptor = MembersRecyclerAdaptor(filteredMembers, members);
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,8 +64,13 @@ class FragmentIdleCall: Fragment(R.layout.fragment_idlecall) {
         membersRecyclerView.adapter = membersAdaptor
 
         membersAdaptor.onMemberClick = {
-            binding.etCallUser.setText(it)
-            hideKeyboard()
+            if (members.available.contains(it)) {
+                binding.etCallUser.setText(it)
+                hideKeyboard()
+            }
+            else {
+                showToast(context!!, "User is Busy")
+            }
         }
 
         binding.etCallUser.setOnFocusChangeListener { _, hasFocus ->
@@ -83,15 +86,16 @@ class FragmentIdleCall: Fragment(R.layout.fragment_idlecall) {
         //Filter members
         binding.etCallUser.doOnTextChanged { text, _, _, _ ->
             filteredMembers.clear()
+            val allMembers = members.available + members.busy
 
             if (text !== "") {
-                val newList = ArrayList(members.filter { it ->
+                val newList = ArrayList(allMembers.filter { it ->
                     it.lowercase().contains(text.toString().lowercase())
                 })
                 filteredMembers.addAll(newList)
             }
             else {
-                val newList = members
+                val newList = allMembers
                 filteredMembers.addAll(newList)
             }
             membersAdaptor.notifyDataSetChanged()
@@ -100,7 +104,7 @@ class FragmentIdleCall: Fragment(R.layout.fragment_idlecall) {
         // Call Button
         binding.btCallAUser.setOnClickListener {
             val member = binding.etCallUser.text.toString()
-            if (!members.contains(member)) {
+            if (!members.available.contains(member)) {
                 showToast(context!!, "Invalid Member Or User Busy")
                 return@setOnClickListener
             }
@@ -141,10 +145,16 @@ class FragmentIdleCall: Fragment(R.layout.fragment_idlecall) {
                 response.body()?.let { it1 ->
                     isMembersLoading = false
                     filteredMembers.clear()
-                    members.clear()
-                    members.addAll(it1.members)
-                    filteredMembers.addAll(it1.members)
+                    members.available.clear()
+                    members.busy.clear()
+                    members.available.addAll(it1.members.available)
+                    members.busy.addAll(it1.members.busy)
+                    filteredMembers.addAll(it1.members.available + it1.members.busy)
                     membersAdaptor.notifyDataSetChanged()
+
+                    if ((it1.members.available.count() + it1.members.busy.count()) == 0) {
+                        showToast(context!!, "No User Found")
+                    }
                 }
             }
 

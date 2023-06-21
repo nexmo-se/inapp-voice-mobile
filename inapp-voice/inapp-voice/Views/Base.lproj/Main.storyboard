@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -267,12 +268,40 @@
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits"/>
                                                             </textField>
-                                                            <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ySi-6E-8rW" userLabel="MemberTableView">
-                                                                <rect key="frame" x="0.0" y="50.000000000000028" width="339" height="180"/>
+                                                            <tableView hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ySi-6E-8rW" userLabel="MemberTableView">
+                                                                <rect key="frame" x="0.0" y="50.000000000000028" width="339" height="160"/>
                                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="height" constant="180" id="AAr-bN-GXh"/>
+                                                                    <constraint firstAttribute="height" constant="160" identifier="tableViewHeightConstraint" id="XHG-Mw-Bph"/>
                                                                 </constraints>
+                                                                <prototypes>
+                                                                    <tableViewCell opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="memberTableCell" id="Kq7-4d-k1I" customClass="TableViewCell" customModule="inapp_voice" customModuleProvider="target">
+                                                                        <rect key="frame" x="0.0" y="50" width="339" height="43.666667938232422"/>
+                                                                        <autoresizingMask key="autoresizingMask"/>
+                                                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Kq7-4d-k1I" id="SkI-mk-eaC">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="339" height="43.666667938232422"/>
+                                                                            <autoresizingMask key="autoresizingMask"/>
+                                                                            <subviews>
+                                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9XS-S5-hyT">
+                                                                                    <rect key="frame" x="7" y="2" width="24" height="42"/>
+                                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                                    <imageReference key="image" image="circle.fill" catalog="system" symbolScale="small"/>
+                                                                                </imageView>
+                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5t6-5d-P7l">
+                                                                                    <rect key="frame" x="39" y="10" width="300" height="24"/>
+                                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                                    <nil key="textColor"/>
+                                                                                    <nil key="highlightedColor"/>
+                                                                                </label>
+                                                                            </subviews>
+                                                                        </tableViewCellContentView>
+                                                                        <connections>
+                                                                            <outlet property="cellImage" destination="9XS-S5-hyT" id="Eu4-Uk-J9T"/>
+                                                                            <outlet property="cellTitle" destination="5t6-5d-P7l" id="YJM-Lz-7dq"/>
+                                                                        </connections>
+                                                                    </tableViewCell>
+                                                                </prototypes>
                                                             </tableView>
                                                         </subviews>
                                                         <constraints>
@@ -448,12 +477,13 @@
                         <outlet property="memberTableView" destination="ySi-6E-8rW" id="OBY-BW-kX6"/>
                         <outlet property="rejectButton" destination="wHO-ZQ-73O" id="ahm-OZ-WJd"/>
                         <outlet property="ringingStackView" destination="n4a-5K-m7y" id="Xur-Ui-aCI"/>
+                        <outlet property="tableViewHeight" destination="XHG-Mw-Bph" id="u2f-Gp-ITa"/>
                         <outlet property="usernameLabel" destination="ojc-g5-hHy" id="1zi-SW-ThA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SOs-CG-dZG" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2346" y="-30"/>
+            <point key="canvasLocation" x="2344.8000000000002" y="-30.295566502463057"/>
         </scene>
         <!--DataChildViewController-->
         <scene sceneID="vs1-xB-JGJ">
@@ -605,6 +635,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="circle.fill" catalog="system" width="128" height="123"/>
         <image name="green-phone" width="1024" height="1024"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

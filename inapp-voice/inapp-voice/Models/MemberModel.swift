@@ -8,5 +8,10 @@
 import Foundation
 
 struct MemberModel: Decodable {
-    let members: [String]
+    let members: memberStateModel
+}
+
+struct memberStateModel: Decodable {
+    let available: [String]
+    let busy: [String]
 }

@@ -16,7 +16,8 @@ class CallViewController: UIViewController {
     @IBOutlet weak var memberSearchTextField: UITextField!
     @IBOutlet weak var memberTableView: UITableView!
     @IBOutlet weak var logoutButton: UIButton!
-    
+    @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
+
     // Active Call View
     @IBOutlet weak var activeCallStackView: UIStackView!
     @IBOutlet weak var callMemberLabel: UILabel!
@@ -222,7 +223,7 @@ extension CallViewController {
             return
         }
         let member = memberSearchTextField.text!
-        if (!memberList.members.contains(member)) {
+        if (!memberList.members.available.contains(member)) {
             self.showToast(message: "Invalid member Or User busy", font: .systemFont(ofSize: 12.0))
             return
         }
@@ -258,8 +259,11 @@ extension CallViewController: MembersManagerDelegate {
             if (self == nil) {return}
             self!.isMembersLoading = false
             self!.memberList = memberList
-            self!.memberSearchResult = memberList.members
+            self!.memberSearchResult = memberList.members.available + memberList.members.busy
             self!.memberTableView.reloadData()
+            if ((memberList.members.available.count + memberList.members.busy.count) == 0) {
+                self!.showToast(message: "No User Found", font: .systemFont(ofSize: 12.0))
+            }
         }
     }
     
@@ -295,13 +299,14 @@ extension CallViewController: UITextFieldDelegate {
     }
     
     func filterMembers(input: String) -> Array<String> {
-        if input != "" && !memberList.members.contains(input){
-            return memberList.members.filter({ member in
+        let memberList = memberList.members.available + memberList.members.busy
+        if input != "" && !memberList.contains(input){
+            return memberList.filter({ member in
                 member.lowercased().contains(input.lowercased())
             })
         }
         else {
-            return memberList.members
+            return memberList
         }
     }
 }
@@ -309,21 +314,21 @@ extension CallViewController: UITextFieldDelegate {
 //MARK: UITableViewDataSource
 extension CallViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCell(withIdentifier: "memberTableCell")
-        
-        if cell == nil {
-            cell = UITableViewCell(style: .default, reuseIdentifier: "memberTableCell")
+        var cell = tableView.dequeueReusableCell(withIdentifier: "memberTableCell", for: indexPath as IndexPath) as! TableViewCell
+
+        if (memberList.members.available.contains(memberSearchResult[indexPath.row])) {
+            cell.cellImage.tintColor = .green
         }
-        
-        if #available(iOS 14.0, *) {
-            var config = UIListContentConfiguration.cell()
-            config.text = memberSearchResult[indexPath.row]
-            cell?.contentConfiguration = config
-        } else {
-            cell?.textLabel?.text = memberSearchResult[indexPath.row]
+        else {
+            cell.cellImage.tintColor = .gray
         }
+        cell.cellTitle.text = memberSearchResult[indexPath.row]
         
-        return cell!
+        tableViewHeight.constant = memberTableView.contentSize.height > 140 ? 140 : memberTableView.contentSize.height
+        
+        view.layoutIfNeeded()
+        
+        return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -334,7 +339,12 @@ extension CallViewController: UITableViewDataSource {
 //MARK: UITableViewDelegate
 extension CallViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        memberSearchTextField.text = memberSearchResult[indexPath.row]
-        memberSearchTextField.endEditing(true)
+        if (memberList.members.available.contains(memberSearchResult[indexPath.row])) {
+            memberSearchTextField.text = memberSearchResult[indexPath.row]
+            memberSearchTextField.endEditing(true)
+        }
+        else {
+            showToast(message: "User is busy", font: .systemFont(ofSize: 12.0))
+        }
     }
 }

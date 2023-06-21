@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A66DBBED35310C4EFB8D653B /* Pods_inapp_voice.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C1FE7CC88207812554976A2 /* Pods_inapp_voice.framework */; };
+		EA242D122A416D6500C89547 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA242D112A416D6500C89547 /* TableViewCell.swift */; };
 		EA279B222A3052BF00DFED14 /* FcmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA279B212A3052BF00DFED14 /* FcmManager.swift */; };
 		EA279B242A30547900DFED14 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EA279B232A30547900DFED14 /* GoogleService-Info.plist */; };
 		EA3C6B9129F001B30049D4BA /* UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3C6B9029F001B30049D4BA /* UI.swift */; };
@@ -41,6 +42,7 @@
 		02172B473E26F68BCA04D4E7 /* Pods-inapp-voice.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-inapp-voice.release.xcconfig"; path = "Target Support Files/Pods-inapp-voice/Pods-inapp-voice.release.xcconfig"; sourceTree = "<group>"; };
 		6C1FE7CC88207812554976A2 /* Pods_inapp_voice.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_inapp_voice.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9547B70E74C9D42B48EA1D34 /* Pods-inapp-voice.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-inapp-voice.debug.xcconfig"; path = "Target Support Files/Pods-inapp-voice/Pods-inapp-voice.debug.xcconfig"; sourceTree = "<group>"; };
+		EA242D112A416D6500C89547 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		EA279B212A3052BF00DFED14 /* FcmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FcmManager.swift; sourceTree = "<group>"; };
 		EA279B232A30547900DFED14 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EA3C6B9029F001B30049D4BA /* UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UI.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				EAC0146D29F13BF200723BC4 /* DataChildViewController.swift */,
+				EA242D112A416D6500C89547 /* TableViewCell.swift */,
 			);
 			path = Childs;
 			sourceTree = "<group>";
@@ -359,6 +362,7 @@
 				EAC0146E29F13BF200723BC4 /* DataChildViewController.swift in Sources */,
 				EA3C6B9129F001B30049D4BA /* UI.swift in Sources */,
 				EAA33DEA29F78A2E007BA8A1 /* CallDataModel.swift in Sources */,
+				EA242D122A416D6500C89547 /* TableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -506,7 +510,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "inapp-voice/inapp-voice.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 38;
+				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_TEAM = PR6C39UQ38;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "inapp-voice/Info.plist";
@@ -540,7 +544,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "inapp-voice/inapp-voice.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 38;
+				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_TEAM = PR6C39UQ38;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "inapp-voice/Info.plist";

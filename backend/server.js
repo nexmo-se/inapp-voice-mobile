@@ -179,11 +179,19 @@ app.post('/getMembers', (req, res) => {
     }
     
     const uniqueBusyUsers = [...new Set(busyUsers)];
-    const membersName = result.data._embedded.users
+    const availableMembers = result.data._embedded.users
       .filter((member) => member.name !== username && !uniqueBusyUsers.includes(member.name))
       .map((member) => member.name)
+
+    const busyMembers = result.data._embedded.users
+    .filter((member) => member.name !== username && uniqueBusyUsers.includes(member.name))
+    .map((member) => member.name)
        
-    return res.status(200).json({members: membersName});
+    return res.status(200).json({members: {
+      available: availableMembers,
+      busy: busyMembers
+    }
+    });
   })
   .catch(error => {
     console.log("get members error: ", error)
