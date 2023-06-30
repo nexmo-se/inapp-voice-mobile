@@ -88,7 +88,7 @@ class FragmentIdleCall: Fragment(R.layout.fragment_idlecall) {
             filteredMembers.clear()
             val allMembers = members.available + members.busy
 
-            if (text !== "") {
+            if (text !== "" && !allMembers.contains(text)) {
                 val newList = ArrayList(allMembers.filter { it ->
                     it.lowercase().contains(text.toString().lowercase())
                 })
@@ -160,9 +160,9 @@ class FragmentIdleCall: Fragment(R.layout.fragment_idlecall) {
 
             override fun onFailure(call: Call<Members>, t: Throwable) {
                 isMembersLoading = false
-                if (context !== null) {
-                    showToast(context!!, "Failed to Load Members")
-                }
+//                if (context !== null) {
+//                    showToast(context!!, "Failed to Load Members")
+//                }
             }
 
         })

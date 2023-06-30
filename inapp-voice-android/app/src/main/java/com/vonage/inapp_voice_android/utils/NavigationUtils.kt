@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import com.vonage.clientcore.core.api.HangupReason
 import com.vonage.inapp_voice_android.views.CallActivity
 import com.vonage.inapp_voice_android.views.LoginActivity
 
@@ -55,11 +56,16 @@ internal fun notifyCallAnsweredToCallActivity(context: Context) {
     sendMessageToCallActivity(context, extras)
 }
 
-internal fun notifyCallDisconnectedToCallActivity(context: Context, isRemote:Boolean, isRemoteReject: Boolean = false) {
+internal fun notifyCallDisconnectedToCallActivity(context: Context, isRemote:Boolean, reason: HangupReason? = null) {
     val extras = Bundle()
     extras.putString(CallActivity.CALL_STATE, CallActivity.CALL_DISCONNECTED)
     extras.putBoolean(CallActivity.IS_REMOTE_DISCONNECT, isRemote)
-    extras.putBoolean(CallActivity.IS_REMOTE_HANGUP, isRemoteReject)
+    if (reason == HangupReason.remoteHangup || reason == HangupReason.remoteReject) {
+        extras.putBoolean(CallActivity.IS_REMOTE_HANGUP, true)
+    }
+    else if (reason == HangupReason.mediaTimeout) {
+        extras.putBoolean(CallActivity.IS_REMOTE_TIMEOUT, true)
+    }
     sendMessageToCallActivity(context, extras)
 }
 

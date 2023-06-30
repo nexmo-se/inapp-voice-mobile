@@ -56,7 +56,7 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
 
     // Vonage
-    implementation 'com.vonage:client-sdk-voice:1.0.2-rc.0'
+    implementation 'com.vonage:client-sdk-voice:1.0.2-rc.2'
 
     // LiveData
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'

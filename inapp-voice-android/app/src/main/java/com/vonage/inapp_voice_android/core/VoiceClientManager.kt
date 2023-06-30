@@ -100,7 +100,7 @@ class VoiceClientManager(private val context: Context) {
                 }
                 setDisconnected(DisconnectCause(cause))
                 clearActiveCall()
-                notifyCallDisconnectedToCallActivity(context, isRemote, reason == HangupReason.remoteHangup)
+                notifyCallDisconnectedToCallActivity(context, isRemote, reason)
             }
         }
 

@@ -273,7 +273,7 @@ extension CallViewController: MembersManagerDelegate {
             
             self!.isMembersLoading = false
             
-            self!.showToast(message: message, font: .systemFont(ofSize: 12.0))
+//            self!.showToast(message: message, font: .systemFont(ofSize: 12.0))
         }
     }
 }
@@ -314,7 +314,7 @@ extension CallViewController: UITextFieldDelegate {
 //MARK: UITableViewDataSource
 extension CallViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCell(withIdentifier: "memberTableCell", for: indexPath as IndexPath) as! TableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "memberTableCell", for: indexPath as IndexPath) as! TableViewCell
 
         if (memberList.members.available.contains(memberSearchResult[indexPath.row])) {
             cell.cellImage.tintColor = .green

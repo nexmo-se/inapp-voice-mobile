@@ -17,7 +17,10 @@ extension VonageClient: VGVoiceClientDelegate {
     func voiceClient(_ client: VGVoiceClient, didReceiveHangupForCall callId: VGCallId, withQuality callQuality: VGRTCQuality, reason: VGHangupReason) {
         let type = self.currentCallStatus == nil ? .outbound : self.currentCallStatus!.type
         
-        if (reason == VGHangupReason.remoteHangup && currentCallStatus?.state == CallState.ringing) {
+        if (reason == VGHangupReason.mediaTimeout) {
+            self.currentCallStatus = CallStatusModel(uuid: UUID(uuidString: callId)!, state: .completed(remote: true, reason: nil), type: type, member: nil, message: "Call Timeout")
+        }
+        else if ((reason == VGHangupReason.remoteHangup || reason == VGHangupReason.remoteReject) && currentCallStatus?.state == CallState.ringing) {
             self.currentCallStatus = CallStatusModel(uuid: UUID(uuidString: callId)!, state: .completed(remote: true, reason: nil), type: type, member: nil, message: "Call Rejected")
         }
         else {
@@ -44,7 +47,7 @@ extension VonageClient: VGVoiceClientDelegate {
         }
         
         let type = self.currentCallStatus == nil ? .inbound : self.currentCallStatus!.type
-        self.currentCallStatus = CallStatusModel(uuid: UUID(uuidString: callId)!, state: .completed(remote: true, reason: cxreason), type:  type, member: nil, message: callEndReason)
+        self.currentCallStatus = CallStatusModel(uuid: UUID(uuidString: callId)!, state: .completed(remote: true, reason: cxreason), type:  type, member: nil, message: nil)
     }
     
     func voiceClient(_ client: VGVoiceClient, didReceiveLegStatusUpdateForCall callId: VGCallId, withLegId legId: String, andStatus status: VGLegStatus) {
