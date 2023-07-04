@@ -104,7 +104,14 @@ class LoginViewController: UIViewController {
             self.showToast(message: "Invalid region", font: .systemFont(ofSize: 12.0))
             return
         }
+        formStackView.isHidden = true
         submitButton.isEnabled = false
+        // Add loading spinner
+        loadingActivityIndicator.center = CGPoint(
+            x: self.view.bounds.midX,
+            y: self.view.bounds.midY
+        )
+        view.addSubview(self.loadingActivityIndicator)
         userManager.fetchCredential(username: usernameTextField.text!, region: regionTextField.text!, pin: pinTextField.text!, token: nil)
     }
 }
@@ -137,15 +144,15 @@ extension LoginViewController {
                     if (self!.user == nil) {return}
                     self!.performSegue(withIdentifier: "goToCallVC", sender: self)
                 }
-                else if (clientStatus.state == .disconnected) {
-                    if clientStatus.message != nil {
-                    
-                        self!.present(createAlert(message: clientStatus.message!, completion: nil), animated: true, completion: nil)
-                    }
-                    else {
-                        self!.showToast(message: "Disconnected", font: .systemFont(ofSize: 12.0))
-                    }
-                }
+//                else if (clientStatus.state == .disconnected) {
+//                    if clientStatus.message != nil {
+//
+//                        self!.present(createAlert(message: clientStatus.message!, completion: nil), animated: true, completion: nil)
+//                    }
+//                    else {
+//                        self!.showToast(message: "Disconnected", font: .systemFont(ofSize: 12.0))
+//                    }
+//                }
             }
         }
     }

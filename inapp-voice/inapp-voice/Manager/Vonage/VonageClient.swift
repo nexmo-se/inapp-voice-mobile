@@ -113,7 +113,7 @@ class VonageClient: NSObject {
         NotificationCenter.default.removeObserver(self)
     }
     
-    func startOutboundCall(user: UserModel, member: String) {
+    func startOutboundCall(user: UserModel, member: String, attempt:Int = 3) {
         voiceClient.createSession(user.token) { error, session in
             if error == nil {
                 self.voiceClient.serverCall(["to": member]) { error, callId in
@@ -126,7 +126,12 @@ class VonageClient: NSObject {
                     }
                 }
             } else {
-                NotificationCenter.default.post(name: .clientStatus, object: VonageClientStatusModel(state: .disconnected, message: error!.localizedDescription))
+                if (attempt > 0){
+                    self.startOutboundCall(user: user, member: member, attempt: attempt - 1 )
+                }
+                else {
+                    self.currentCallStatus = CallStatusModel(uuid: nil, state: .completed(remote: false, reason: .failed), type: .outbound, member: nil, message: error!.localizedDescription)
+                }
             }
         }
     }
