@@ -116,7 +116,7 @@ app.post('/getCredential', async (req, res) => {
   const busyConv = await instanceState.hget(BUSY_CONV_STATE_KEY, selectedRegion);
   if (busyConv) {
     let busyConvJson = JSON.parse(busyConv)
-    let index = busyConvJson.findIndex((conv) => conv.users.includes(username))
+    let index = busyConvJson.findIndex((conv) => conv.users && conv.users.includes(username))
     if (index > -1) {
       busyConvJson.splice(index, 1);
       await instanceState.hset(BUSY_CONV_STATE_KEY, { [region]: JSON.stringify(busyConvJson) });
@@ -485,7 +485,7 @@ app.get('/voice/answer', async (req, res) => {
 
       let data = {
         conversationId: req.query.conversation_uuid,
-        users: null
+        users: []
       }
       if (busyConv) {
         let busyConvJson = JSON.parse(busyConv)

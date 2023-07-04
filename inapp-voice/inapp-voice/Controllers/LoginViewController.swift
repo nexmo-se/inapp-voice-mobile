@@ -104,6 +104,11 @@ class LoginViewController: UIViewController {
             self.showToast(message: "Invalid region", font: .systemFont(ofSize: 12.0))
             return
         }
+        
+        usernameTextField.endEditing(true)
+        regionTextField.endEditing(true)
+        pinTextField.endEditing(true)
+        
         formStackView.isHidden = true
         submitButton.isEnabled = false
         // Add loading spinner
