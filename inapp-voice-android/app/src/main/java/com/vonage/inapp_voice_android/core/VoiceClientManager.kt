@@ -155,9 +155,8 @@ class VoiceClientManager(private val context: Context) {
     }
 
     fun logout(onSuccessCallback: (() -> Unit)? = null){
-        unregisterDevicePushToken(coreContext.user)
-        coreContext.user = null
         if (coreContext.sessionId != null) {
+            unregisterDevicePushToken(coreContext.user)
             coreContext.sessionId = null
             client.deleteSession { error ->
                 error?.let {
@@ -167,6 +166,7 @@ class VoiceClientManager(private val context: Context) {
                 }
             }
         }
+        coreContext.user = null
     }
 
     fun startOutboundCall(callContext: Map<String, String>? = null){

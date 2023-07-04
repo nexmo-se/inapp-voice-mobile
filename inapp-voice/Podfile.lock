@@ -51,13 +51,13 @@ PODS:
   - nanopb/decode (2.30909.0)
   - nanopb/encode (2.30909.0)
   - PromisesObjC (2.2.0)
-  - VonageClientSDKVoice (1.0.2-rc.2):
+  - VonageClientSDKVoice (1.0.2):
     - VonageWebRTC (~> 99.2.39)
   - VonageWebRTC (99.2.39)
 
 DEPENDENCIES:
   - Firebase/Messaging
-  - VonageClientSDKVoice (= 1.0.2-rc.2)
+  - VonageClientSDKVoice (= 1.0.2)
 
 SPEC REPOS:
   trunk:
@@ -83,9 +83,9 @@ SPEC CHECKSUMS:
   GoogleUtilities: 9aa0ad5a7bc171f8bae016300bfcfa3fb8425749
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   PromisesObjC: 09985d6d70fbe7878040aa746d78236e6946d2ef
-  VonageClientSDKVoice: d839cf90a9cf82a0165f072f48d0abf21beae2fc
+  VonageClientSDKVoice: 76d672652708d348baff45f5ce8cb7de5af6fc1b
   VonageWebRTC: 4b57187170ef4ea435006e932600646a0521d6b0
 
-PODFILE CHECKSUM: ce32dba9c2b616f346a7bd1d1c866d57e65b6f3c
+PODFILE CHECKSUM: 46ba9b5a0474ca948076bd0cf4a53fbfd2b81a5b
 
 COCOAPODS: 1.12.1
