@@ -15,7 +15,7 @@ protocol UserManagerDelegate {
 struct UserManager {
     var delegate: UserManagerDelegate?
     
-    func fetchCredential(username:String, region: String, pin: String?, token: String?) {
+    func fetchCredential(username:String, region: String, pin: String?, token: String?, attempt:Int = 3) {
         
         var parameters: [String: String] = [
             "username": username,
@@ -48,12 +48,22 @@ struct UserManager {
             
             URLSession.shared.dataTask(with: request) { data, response, error in
                 if error != nil {
-                    self.delegate?.handleUserManagerError(message: "Fetch Credential API Error: \(error!.localizedDescription)")
+                    if (attempt > 0) {
+                        self.fetchCredential(username:username, region: region, pin: pin, token: token, attempt: attempt - 1)
+                    }
+                    else {
+                        self.delegate?.handleUserManagerError(message: "Fetch Credential API Error: \(error!.localizedDescription)")
+                    }
                     return
                 }
                 if let httpResponse = response as? HTTPURLResponse {
                     if (httpResponse.statusCode != 200) {
-                        self.delegate?.handleUserManagerError(message: "Failed to get credential, status code \(httpResponse.statusCode)")
+                        if (attempt > 0) {
+                            self.fetchCredential(username:username, region: region, pin: pin, token: token, attempt: attempt - 1)
+                        }
+                        else {
+                            self.delegate?.handleUserManagerError(message: "Failed to get credential, status code \(httpResponse.statusCode)")
+                        }
                         return
                     }
                 }

@@ -149,15 +149,10 @@ extension LoginViewController {
                     if (self!.user == nil) {return}
                     self!.performSegue(withIdentifier: "goToCallVC", sender: self)
                 }
-//                else if (clientStatus.state == .disconnected) {
-//                    if clientStatus.message != nil {
-//
-//                        self!.present(createAlert(message: clientStatus.message!, completion: nil), animated: true, completion: nil)
-//                    }
-//                    else {
-//                        self!.showToast(message: "Disconnected", font: .systemFont(ofSize: 12.0))
-//                    }
-//                }
+                else if (clientStatus.state == .disconnected) {
+                    self!.formStackView.isHidden = false
+                    self!.loadingActivityIndicator.removeFromSuperview()
+                }
             }
         }
     }
@@ -254,6 +249,7 @@ extension LoginViewController: UserManagerDelegate {
             self!.formStackView.isHidden = false
             self!.loadingActivityIndicator.removeFromSuperview()
             self!.submitButton.isEnabled = true
+            self!.appDelegate.vgclient.logout()
             self!.present(createAlert(message: message, completion: nil), animated: true, completion: nil)
         }
     }

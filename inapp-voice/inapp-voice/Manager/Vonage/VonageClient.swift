@@ -72,7 +72,7 @@ class VonageClient: NSObject {
         self.voiceClient.delegate = self
     }
     
-    func login(user: UserModel) {
+    func login(user: UserModel, attempt:Int = 3) {
         if (!Session.isLoggedIn) {
             self.initClient(user: user)
         }
@@ -96,7 +96,12 @@ class VonageClient: NSObject {
                 NotificationCenter.default.post(name: .clientStatus, object: VonageClientStatusModel(state: .connected, message: nil))
                 
             } else {
-                NotificationCenter.default.post(name: .clientStatus, object: VonageClientStatusModel(state: .disconnected, message: error!.localizedDescription))
+                if (attempt > 0) {
+                    self.login(user: user, attempt: attempt - 1)
+                }
+                else {
+                    NotificationCenter.default.post(name: .clientStatus, object: VonageClientStatusModel(state: .disconnected, message: error!.localizedDescription))
+                }
             }
         }
     }
@@ -159,7 +164,7 @@ class VonageClient: NSObject {
         if (deviceId == nil) {return}
         self.voiceClient.unregisterDeviceTokens(byDeviceId: deviceId!) { error in
             if (error != nil) {
-                NotificationCenter.default.post(name: .clientStatus, object: VonageClientStatusModel(state: .disconnected, message: error!.localizedDescription))
+                NotificationCenter.default.post(name: .clientStatus, object: VonageClientStatusModel(state: .disconnected, message: nil))
             }
             else {
                 UserDefaults.standard.removeObject(forKey: Constants.deviceIdKey)
