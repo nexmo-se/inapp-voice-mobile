@@ -197,7 +197,8 @@ extension CallViewController {
                 if (clientStatus.state == .disconnected) {
                     if clientStatus.message != nil {
                         self!.present(createAlert(message: clientStatus.message!, completion: { isActionSubmitted in
-                            self!.logout()
+                            self!.appDelegate.vgclient.logout()
+                            self!.dismiss(animated: true)
                         }), animated: true, completion: nil)
                     }
                 }

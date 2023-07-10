@@ -14,6 +14,7 @@
 		EA3C6B9129F001B30049D4BA /* UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3C6B9029F001B30049D4BA /* UI.swift */; };
 		EA3C6B9429F003FA0049D4BA /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3C6B9329F003FA0049D4BA /* UserManager.swift */; };
 		EA3C6B9729F004D00049D4BA /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3C6B9629F004D00049D4BA /* CallViewController.swift */; };
+		EA47E3C72A57B72D00D0E321 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA47E3C62A57B72D00D0E321 /* Reachability.swift */; };
 		EA4FCBFE29F2340C00F07478 /* MembersManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4FCBFD29F2340C00F07478 /* MembersManager.swift */; };
 		EA4FCC0229F2356900F07478 /* MemberModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4FCC0129F2356900F07478 /* MemberModel.swift */; };
 		EA5DEAC529F0F18000373430 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA5DEAC429F0F18000373430 /* UserModel.swift */; };
@@ -48,6 +49,7 @@
 		EA3C6B9029F001B30049D4BA /* UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UI.swift; sourceTree = "<group>"; };
 		EA3C6B9329F003FA0049D4BA /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		EA3C6B9629F004D00049D4BA /* CallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewController.swift; sourceTree = "<group>"; };
+		EA47E3C62A57B72D00D0E321 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		EA4FCBFD29F2340C00F07478 /* MembersManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembersManager.swift; sourceTree = "<group>"; };
 		EA4FCC0129F2356900F07478 /* MemberModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberModel.swift; sourceTree = "<group>"; };
 		EA5DEAC429F0F18000373430 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 		EA3C6B9229F003B20049D4BA /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				EA47E3C52A57B70700D0E321 /* Connection */,
 				EAC1EA7129FA564C00AA5B0B /* Vonage */,
 				EAC1EA7029FA563D00AA5B0B /* Network */,
 			);
@@ -133,6 +136,14 @@
 				EA3C6B9629F004D00049D4BA /* CallViewController.swift */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		EA47E3C52A57B70700D0E321 /* Connection */ = {
+			isa = PBXGroup;
+			children = (
+				EA47E3C62A57B72D00D0E321 /* Reachability.swift */,
+			);
+			path = Connection;
 			sourceTree = "<group>";
 		};
 		EA5DEAC129F0CD1100373430 /* Models */ = {
@@ -354,6 +365,7 @@
 				EAC1EA6F29FA563600AA5B0B /* VonageClient+VGProvider.swift in Sources */,
 				EA8AF70B29F6266D00A897BD /* PushToken.swift in Sources */,
 				EAC1EA7529FA589A00AA5B0B /* VonageClientStatusModel.swift in Sources */,
+				EA47E3C72A57B72D00D0E321 /* Reachability.swift in Sources */,
 				EA8CDA1F29EF7CBD00BFDDF5 /* SceneDelegate.swift in Sources */,
 				EAACD8F92A0C075200BDC2BF /* Session.swift in Sources */,
 				EAC1EA7329FA574F00AA5B0B /* CallStatusModel.swift in Sources */,
@@ -510,7 +522,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "inapp-voice/inapp-voice.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 48;
+				CURRENT_PROJECT_VERSION = 49;
 				DEVELOPMENT_TEAM = PR6C39UQ38;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "inapp-voice/Info.plist";
@@ -544,7 +556,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "inapp-voice/inapp-voice.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 48;
+				CURRENT_PROJECT_VERSION = 49;
 				DEVELOPMENT_TEAM = PR6C39UQ38;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "inapp-voice/Info.plist";

@@ -81,7 +81,7 @@ class CallActivity : AppCompatActivity() {
             // Call Remotely Timeout
             intent?.getBooleanExtra(IS_REMOTE_TIMEOUT, false)?.let {
                 if (it && currentState == CALL_STARTED) {
-                    showAlert(this@CallActivity, "Call Timeout", false)
+                    showAlert(this@CallActivity, "No Answer", false)
                 }
             }
 

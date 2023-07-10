@@ -60,10 +60,10 @@ internal fun notifyCallDisconnectedToCallActivity(context: Context, isRemote:Boo
     val extras = Bundle()
     extras.putString(CallActivity.CALL_STATE, CallActivity.CALL_DISCONNECTED)
     extras.putBoolean(CallActivity.IS_REMOTE_DISCONNECT, isRemote)
-    if (reason == HangupReason.remoteHangup || reason == HangupReason.remoteReject) {
+    if (reason == HangupReason.remoteReject) {
         extras.putBoolean(CallActivity.IS_REMOTE_HANGUP, true)
     }
-    else if (reason == HangupReason.mediaTimeout) {
+    else if (reason == HangupReason.remoteHangup) {
         extras.putBoolean(CallActivity.IS_REMOTE_TIMEOUT, true)
     }
     sendMessageToCallActivity(context, extras)

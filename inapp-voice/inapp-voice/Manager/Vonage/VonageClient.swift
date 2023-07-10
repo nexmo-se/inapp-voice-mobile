@@ -111,7 +111,6 @@ class VonageClient: NSObject {
         Session.isLoggedIn = false
         self.currentCallStatus = nil
         self.currentCallData = nil
-        UserDefaults.standard.removeObject(forKey: Constants.userKey)
         self.voiceClient.deleteSession { error in
             NotificationCenter.default.post(name: .clientStatus, object: VonageClientStatusModel(state: .disconnected, message: nil))
         }
@@ -163,10 +162,9 @@ class VonageClient: NSObject {
         let deviceId = UserDefaults.standard.string(forKey: Constants.deviceIdKey)
         if (deviceId == nil) {return}
         self.voiceClient.unregisterDeviceTokens(byDeviceId: deviceId!) { error in
-            if (error != nil) {
-                NotificationCenter.default.post(name: .clientStatus, object: VonageClientStatusModel(state: .disconnected, message: nil))
-            }
-            else {
+            if (error == nil) {
+                // Remove user only if successfully unregister the device, to avoid receive false voip push
+                UserDefaults.standard.removeObject(forKey: Constants.userKey)
                 UserDefaults.standard.removeObject(forKey: Constants.deviceIdKey)
             }
         }

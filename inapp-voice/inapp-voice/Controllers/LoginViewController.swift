@@ -18,7 +18,6 @@ class LoginViewController: UIViewController {
     
     // Table
     @IBOutlet weak var regionTableView: UITableView!
-    
     var regionSearchResult = Constants.countries
     
     var user: UserModel?
@@ -55,35 +54,15 @@ class LoginViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(connectionStatusReceived(_:)), name: .clientStatus, object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(networkStatusChangedReceived(_:)), name: .networkConnectionStatusChanged, object: nil)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        if let data = UserDefaults.standard.data(forKey: Constants.userKey) {
-            do {
-                let decoder = JSONDecoder()
-                let user = try decoder.decode(UserModel.self, from: data)
-                
-                // Refresh token
-                self.userManager.fetchCredential(username: user.username, region: user.region, pin: nil, token: user.token)
-                
-                self.formStackView.isHidden = true
-                
-                // Add loading spinner
-                self.loadingActivityIndicator.center = CGPoint(
-                    x: self.view.bounds.midX,
-                    y: self.view.bounds.midY
-                )
-                self.view.addSubview(self.loadingActivityIndicator)
-                
-            } catch {
-                self.present(createAlert(message: "Unable to Decode user: \(error)", completion: { isActionSubmitted in
-                    self.formStackView.isHidden = false
-                }), animated: true)
-            }
-        }
+        autoLogin()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -93,6 +72,37 @@ class LoginViewController: UIViewController {
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    private func autoLogin() {
+        DispatchQueue.main.async { [weak self] in
+            // Check if view controller visible and has network connected
+            if (self != nil && Reachability.isConnectedToNetwork() && self!.isViewLoaded && self!.view.window != nil) {
+                if let data = UserDefaults.standard.data(forKey: Constants.userKey) {
+                    do {
+                        let decoder = JSONDecoder()
+                        let user = try decoder.decode(UserModel.self, from: data)
+                        
+                        // Refresh token
+                        self!.userManager.fetchCredential(username: user.username, region: user.region, pin: nil, token: user.token)
+                        
+                        self!.formStackView.isHidden = true
+                        
+                        // Add loading spinner
+                        self!.loadingActivityIndicator.center = CGPoint(
+                            x: self!.view.bounds.midX,
+                            y: self!.view.bounds.midY
+                        )
+                        self!.view.addSubview(self!.loadingActivityIndicator)
+                        
+                    } catch {
+                        self!.present(createAlert(message: "Unable to Decode user: \(error)", completion: { isActionSubmitted in
+                            self!.formStackView.isHidden = false
+                        }), animated: true)
+                    }
+                }
+            }
+        }
     }
     
     @IBAction func submitButtonClicked(_ sender: Any) {
@@ -121,7 +131,7 @@ class LoginViewController: UIViewController {
     }
 }
 
-//MARK: UITextFieldDelegate
+//MARK: Notification
 extension LoginViewController {
     @objc func keyboardWillHide() {
         self.view.frame.origin.y = 0
@@ -156,6 +166,11 @@ extension LoginViewController {
             }
         }
     }
+    
+    @objc func networkStatusChangedReceived(_ notification: NSNotification) {
+        autoLogin()
+    }
+
 }
 
 //MARK: UITextFieldDelegate

@@ -97,6 +97,7 @@ class VoiceClientManager(private val context: Context) {
                     HangupReason.remoteHangup -> DisconnectCause.REMOTE to true
                     HangupReason.localHangup -> DisconnectCause.LOCAL to false
                     HangupReason.mediaTimeout -> DisconnectCause.BUSY to true
+                    HangupReason.remoteNoAnswerTimeout -> DisconnectCause.CANCELED to true
                 }
                 setDisconnected(DisconnectCause(cause))
                 clearActiveCall()

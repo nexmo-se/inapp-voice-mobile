@@ -39,6 +39,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         // try? AVAudioSession.sharedInstance().setCategory(.playAndRecord)
+        
+        // Check internet connection
+        Reachability.shared.startMonitoring()
 
         return true
     }
@@ -147,6 +150,7 @@ extension Notification.Name {
     static let callStatus = Notification.Name("CallStatus")
     static let handledCallData = Notification.Name("CallData")
     static let updateCallMembersStatus = Notification.Name("UpdateCallMembers")
+    static let networkConnectionStatusChanged = Notification.Name("networkConnectionStatusChanged")
 }
 
 
