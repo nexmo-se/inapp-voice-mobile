@@ -72,7 +72,7 @@ class CallActivity : AppCompatActivity() {
             }
 
             // Call Remotely Hangup
-            intent?.getBooleanExtra(IS_REMOTE_HANGUP, false)?.let {
+            intent?.getBooleanExtra(IS_REMOTE_REJECT, false)?.let {
                 if (it && currentState == CALL_STARTED) {
                     showAlert(this@CallActivity, "Call Rejected", false)
                 }
@@ -296,7 +296,7 @@ class CallActivity : AppCompatActivity() {
         const val CALL_ERROR = "callError"
         const val SESSION_ERROR = "sessionError"
         const val IS_REMOTE_DISCONNECT = "isRemoteDisconnect"
-        const val IS_REMOTE_HANGUP = "isRemoteReject"
+        const val IS_REMOTE_REJECT = "isRemoteReject"
         const val IS_REMOTE_TIMEOUT = "isRemoteTimeout"
     }
 }

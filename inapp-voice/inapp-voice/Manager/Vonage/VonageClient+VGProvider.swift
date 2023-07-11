@@ -20,7 +20,7 @@ extension VonageClient: VGVoiceClientDelegate {
         if (reason == VGHangupReason.remoteReject) {
             self.currentCallStatus = CallStatusModel(uuid: UUID(uuidString: callId)!, state: .completed(remote: true, reason: nil), type: type, member: nil, message: "Call Rejected")
         }
-        else if (reason == VGHangupReason.remoteHangup && currentCallStatus?.state == CallState.ringing) {
+        else if (reason == VGHangupReason.remoteNoAnswerTimeout) {
             self.currentCallStatus = CallStatusModel(uuid: UUID(uuidString: callId)!, state: .completed(remote: true, reason: nil), type: type, member: nil, message: "No Answer")
         }
         else {

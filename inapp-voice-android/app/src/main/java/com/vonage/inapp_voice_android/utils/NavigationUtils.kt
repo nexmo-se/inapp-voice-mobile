@@ -61,9 +61,9 @@ internal fun notifyCallDisconnectedToCallActivity(context: Context, isRemote:Boo
     extras.putString(CallActivity.CALL_STATE, CallActivity.CALL_DISCONNECTED)
     extras.putBoolean(CallActivity.IS_REMOTE_DISCONNECT, isRemote)
     if (reason == HangupReason.remoteReject) {
-        extras.putBoolean(CallActivity.IS_REMOTE_HANGUP, true)
+        extras.putBoolean(CallActivity.IS_REMOTE_REJECT, true)
     }
-    else if (reason == HangupReason.remoteHangup) {
+    else if (reason == HangupReason.remoteNoAnswerTimeout) {
         extras.putBoolean(CallActivity.IS_REMOTE_TIMEOUT, true)
     }
     sendMessageToCallActivity(context, extras)

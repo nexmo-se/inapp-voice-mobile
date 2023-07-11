@@ -6,6 +6,6 @@ target 'inapp-voice' do
   use_frameworks!
 
   # Pods for inapp-voice
-  pod 'VonageClientSDKVoice', '1.0.3-rc.0'
+  pod 'VonageClientSDKVoice', '1.0.3-rc.1'
   pod 'Firebase/Messaging'
 end
