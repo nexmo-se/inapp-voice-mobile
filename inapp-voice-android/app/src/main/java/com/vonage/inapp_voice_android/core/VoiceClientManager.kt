@@ -2,7 +2,6 @@ package com.vonage.inapp_voice_android.core
 
 import android.content.Context
 import android.telecom.DisconnectCause
-import android.util.Log
 import com.google.firebase.messaging.RemoteMessage
 import com.vonage.android_core.PushType
 import com.vonage.android_core.VGClientConfig
@@ -73,8 +72,11 @@ class VoiceClientManager(private val context: Context) {
 
             if(isDeviceLocked(context)){
                 coreContext.notificationManager.showIncomingCallNotification(callId, from, type)
-            } else {
+            } else try {
                 coreContext.telecomHelper.startIncomingCall(callId, from, type)
+            } catch (e: Exception){
+                showToast(context, "Incoming Call Error: ${e.message}")
+                client.reject(callId){}
             }
         }
 
@@ -176,11 +178,15 @@ class VoiceClientManager(private val context: Context) {
                 notifyCallErrorToCallActivity(context, "Error starting outbound call: $it")
                 println("Error starting outbound call: $it")
             } ?: callId?.let {
-                notifyCallStartedToCallActivity(context)
-
                 println("Outbound Call successfully started with Call ID: $it")
                 val to = callContext?.get(Constants.CONTEXT_KEY_RECIPIENT) ?: Constants.DEFAULT_DIALED_NUMBER
-                coreContext.telecomHelper.startOutgoingCall(it, to)
+                try {
+                    coreContext.telecomHelper.startOutgoingCall(it, to)
+                    notifyCallStartedToCallActivity(context)
+                } catch (e: Exception){
+                    showToast(context, "Outgoing Call Error: ${e.message}")
+                    client.hangup(it){}
+                }
             }
         }
     }
