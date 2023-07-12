@@ -6,6 +6,7 @@ import android.util.Log
 import com.vonage.inapp_voice_android.App
 import com.vonage.inapp_voice_android.models.CallData
 import com.vonage.inapp_voice_android.utils.Constants
+import com.vonage.inapp_voice_android.utils.TimerManager
 import com.vonage.inapp_voice_android.utils.showToast
 
 /**
@@ -44,6 +45,7 @@ class CallConnectionService : ConnectionService() {
         connectionManagerPhoneAccount: PhoneAccountHandle?,
         request: ConnectionRequest?
     ): Connection {
+        TimerManager.cancelTimer(TimerManager.CONNECTION_SERVICE_TIMER)
         val bundle = request!!.extras
         val callId = bundle.getString(Constants.EXTRA_KEY_CALL_ID)!!
         val to = bundle.getString(Constants.EXTRA_KEY_TO)
@@ -68,6 +70,7 @@ class CallConnectionService : ConnectionService() {
     }
 
     override fun onCreateOutgoingConnectionFailed(connectionManagerPhoneAccount: PhoneAccountHandle?, request: ConnectionRequest?) {
+        TimerManager.cancelTimer(TimerManager.CONNECTION_SERVICE_TIMER)
         Log.e("onCreateOutgoingFailed:",request.toString())
         showToast(applicationContext, "onCreateOutgoingConnectionFailed")
     }

@@ -183,12 +183,20 @@ class VoiceClientManager(private val context: Context) {
                 try {
                     coreContext.telecomHelper.startOutgoingCall(it, to)
                     notifyCallStartedToCallActivity(context)
+                    TimerManager.startTimer(TimerManager.CONNECTION_SERVICE_TIMER, 500){
+                        abortOutboundCall(it, "ConnectionService Not Available")
+                    }
                 } catch (e: Exception){
-                    showToast(context, "Outgoing Call Error: ${e.message}")
-                    client.hangup(it){}
+                    abortOutboundCall(it, e.message)
                 }
             }
         }
+    }
+
+    private fun abortOutboundCall(callId: CallId, message: String?){
+        showToast(context, "Outgoing Call Error: $message")
+        client.hangup(callId){}
+        notifyCallDisconnectedToCallActivity(context, false, HangupReason.localHangup)
     }
 
     private fun registerDevicePushToken(user: User){
@@ -237,7 +245,7 @@ class VoiceClientManager(private val context: Context) {
                     }
                     override fun onFailure(call: Call<Void>, t: Throwable) {
                     }
-                 })
+                })
         }
     }
 
@@ -359,7 +367,7 @@ class VoiceClientManager(private val context: Context) {
 
     // Utilities to filter active calls
     private fun takeIfActive(callId: CallId) : CallConnection? {
-      return coreContext.activeCall?.takeIf { it.callId == callId }
+        return coreContext.activeCall?.takeIf { it.callId == callId }
     }
     private fun CallConnection.takeIfActive() : CallConnection? {
         return takeIfActive(callId)
