@@ -192,7 +192,12 @@ class CallActivity : AppCompatActivity() {
         turnKeyguardOff {
             if(notificationManager.isIncomingCallNotificationActive()){
                 notificationManager.dismissIncomingCallNotification(callId)
-                telecomHelper.startIncomingCall(callId, from, type)
+                try{
+                    telecomHelper.startIncomingCall(callId, from, type)
+                } catch (e: Exception){
+                    showToast(applicationContext, "Incoming Call Error: ${e.message}")
+                    this.finish()
+                }
             } else {
                 // If the Notification has been canceled in the meantime
                 this.finish()

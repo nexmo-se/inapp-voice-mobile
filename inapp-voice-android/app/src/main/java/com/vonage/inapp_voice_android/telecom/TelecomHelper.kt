@@ -10,8 +10,6 @@ import android.os.Bundle
 import android.telecom.PhoneAccount
 import android.telecom.PhoneAccountHandle
 import android.telecom.TelecomManager
-import android.telephony.PhoneStateListener
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.vonage.clientcore.core.api.models.Username
@@ -83,20 +81,11 @@ class TelecomHelper(private val context: Context) {
      */
     fun startIncomingCall(callId:CallId, from:Username, type: VoiceChannelType){
         println(("Call from: ${from}, via channel $callId, channelType: $type"))
+        checkCallPermissions(false)
         val extras = Bundle()
         extras.putString(Constants.EXTRA_KEY_CALL_ID, callId)
         extras.putString(Constants.EXTRA_KEY_FROM, from)
-        val isManageOwnCallsPermitted = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)  ActivityCompat.checkSelfPermission(context, Manifest.permission.MANAGE_OWN_CALLS) == PackageManager.PERMISSION_GRANTED else true
-        val isCallPermitted = try {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
-                telecomManager.isIncomingCallPermitted(phoneAccountHandle)
-            else true
-        }catch (_ : Exception){
-            true
-        }
-        if (isManageOwnCallsPermitted && isPhoneAccountEnabled && isCallPermitted){
-            telecomManager.addNewIncomingCall(phoneAccountHandle, extras)
-        }
+        telecomManager.addNewIncomingCall(phoneAccountHandle, extras)
     }
 
     /**
@@ -104,19 +93,30 @@ class TelecomHelper(private val context: Context) {
      */
     fun startOutgoingCall(callId:CallId, to: String){
         println(("Calling Server with callId: $callId"))
+        checkCallPermissions(true)
         val rootExtras = Bundle()
         val extras = Bundle()
         extras.putString(Constants.EXTRA_KEY_TO, to)
         extras.putString(Constants.EXTRA_KEY_CALL_ID, callId)
         rootExtras.putParcelable(TelecomManager.EXTRA_PHONE_ACCOUNT_HANDLE, phoneAccountHandle)
         rootExtras.putParcelable(TelecomManager.EXTRA_OUTGOING_CALL_EXTRAS, extras)
+        telecomManager.placeCall(Uri.parse("tel:$to"), rootExtras)
+    }
+
+    private fun checkCallPermissions(isOutgoing: Boolean){
         val isManageOwnCallsPermitted = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)  ActivityCompat.checkSelfPermission(context, Manifest.permission.MANAGE_OWN_CALLS) == PackageManager.PERMISSION_GRANTED else true
         val isCallPhonePermitted = ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED
-        val isCallPermitted = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) telecomManager.isOutgoingCallPermitted(phoneAccountHandle) else  true
-
-
-        if (isManageOwnCallsPermitted && isCallPhonePermitted && isPhoneAccountEnabled && isCallPermitted){
-            telecomManager.placeCall(Uri.parse("tel:$to"), rootExtras)
-        }
+        val isIncomingCallPermitted = try {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
+                telecomManager.isIncomingCallPermitted(phoneAccountHandle)
+            else true
+        } catch (_ : Exception){ true }
+        val isOutgoingCallPermitted = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) telecomManager.isOutgoingCallPermitted(phoneAccountHandle) else  true
+        // Throw the appropriate error
+        if(!isManageOwnCallsPermitted) throw Exception("MANAGE_OWN_CALLS Permission Not granted")
+        if(isOutgoing && !isCallPhonePermitted) throw Exception("CALL_PHONE Permission Not granted")
+        if(isOutgoing && !isOutgoingCallPermitted) throw Exception("Outgoing Call Not Permitted by System")
+        if(!isOutgoing && !isIncomingCallPermitted) throw Exception("Incoming Call Not Permitted by System")
+        if(!isPhoneAccountEnabled) throw Exception("$CUSTOM_PHONE_ACCOUNT_NAME Phone Account Not Enabled")
     }
 }

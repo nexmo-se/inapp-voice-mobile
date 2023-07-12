@@ -43,6 +43,10 @@ class CallConnection(val callId: CallId) : Connection() {
         clientManager.hangupCall(this)
     }
 
+    override fun onAbort() {
+        clientManager.hangupCall(this)
+    }
+
     override fun onCallAudioStateChanged(state: CallAudioState?) {
         state ?: return
         // Trigger mute/unmute only if states are not consistent
