@@ -195,8 +195,7 @@ class CallActivity : AppCompatActivity() {
                 try{
                     telecomHelper.startIncomingCall(callId, from, type)
                 } catch (e: Exception){
-                    showToast(applicationContext, "Incoming Call Error: ${e.message}")
-                    this.finish()
+                    clientManager.abortInboundCall(callId, e.message)
                 }
             } else {
                 // If the Notification has been canceled in the meantime

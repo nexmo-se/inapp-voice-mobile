@@ -1,7 +1,9 @@
 package com.vonage.inapp_voice_android.core
 
 import android.content.Context
+import android.net.Uri
 import android.telecom.DisconnectCause
+import android.telecom.TelecomManager
 import com.google.firebase.messaging.RemoteMessage
 import com.vonage.android_core.PushType
 import com.vonage.android_core.VGClientConfig
@@ -75,8 +77,7 @@ class VoiceClientManager(private val context: Context) {
             } else try {
                 coreContext.telecomHelper.startIncomingCall(callId, from, type)
             } catch (e: Exception){
-                showToast(context, "Incoming Call Error: ${e.message}")
-                client.reject(callId){}
+                abortInboundCall(callId, e.message)
             }
         }
 
@@ -184,7 +185,7 @@ class VoiceClientManager(private val context: Context) {
                     coreContext.telecomHelper.startOutgoingCall(it, to)
                     notifyCallStartedToCallActivity(context)
                     TimerManager.startTimer(TimerManager.CONNECTION_SERVICE_TIMER, 500){
-                        abortOutboundCall(it, "ConnectionService Not Available")
+                        mockOutgoingConnection(it, to)
                     }
                 } catch (e: Exception){
                     abortOutboundCall(it, e.message)
@@ -197,6 +198,36 @@ class VoiceClientManager(private val context: Context) {
         showToast(context, "Outgoing Call Error: $message")
         client.hangup(callId){}
         notifyCallDisconnectedToCallActivity(context, false, HangupReason.localHangup)
+    }
+
+    internal fun abortInboundCall(callId: CallId, message: String?){
+        showToast(context, "Incoming Call Error: $message")
+        client.reject(callId){}
+        notifyCallDisconnectedToCallActivity(context, false)
+    }
+
+    /**
+     *  ConnectionService not working on some devices (e.g. Samsung)
+     *  is a known issue.
+     *
+     *  This method will mock
+     *  `ConnectionService#onCreateOutgoingConnection`
+     *  and allow outgoing calls without interacting with the Telecom framework.
+     */
+    private fun mockOutgoingConnection(callId: CallId, to: String) : CallConnection {
+        showToast(context, "ConnectionService Not Available")
+        CallData.callId = callId
+        CallData.memberName = to
+        CallData.memberLegId = null
+        CallData.username = App.coreContext.user!!.username
+        CallData.region = App.coreContext.user!!.region
+
+        val connection = CallConnection(callId).apply {
+            setAddress(Uri.parse(to), TelecomManager.PRESENTATION_ALLOWED)
+            setCallerDisplayName(to, TelecomManager.PRESENTATION_ALLOWED)
+            setDialing()
+        }
+        return connection
     }
 
     private fun registerDevicePushToken(user: User){
