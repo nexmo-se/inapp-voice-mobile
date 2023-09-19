@@ -42,16 +42,6 @@ class LoginActivity : AppCompatActivity() {
             Manifest.permission.MANAGE_OWN_CALLS,
             Manifest.permission.ANSWER_PHONE_CALLS,
             Manifest.permission.READ_PHONE_NUMBERS,
-            Manifest.permission.BLUETOOTH_CONNECT
-        )
-        else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S)
-        arrayOf(Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.CALL_PHONE,
-            Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.MANAGE_OWN_CALLS,
-            Manifest.permission.ANSWER_PHONE_CALLS,
-            Manifest.permission.READ_PHONE_NUMBERS,
-            Manifest.permission.BLUETOOTH_CONNECT
         )
         else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
         arrayOf(

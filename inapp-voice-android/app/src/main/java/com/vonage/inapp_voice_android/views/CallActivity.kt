@@ -1,17 +1,12 @@
 package com.vonage.inapp_voice_android.views
 
-import android.R.attr.label
 import android.content.*
-import android.content.pm.PackageManager
 import android.graphics.Color
-import android.opengl.Visibility
 import android.os.Bundle
 import android.telecom.Connection
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.vonage.clientcore.core.api.models.Username
 import com.vonage.clientcore.core.conversation.VoiceChannelType
@@ -138,7 +133,6 @@ class CallActivity : AppCompatActivity() {
             clipboard.setPrimaryClip(clip)
             showToast(this@CallActivity, "Copied")
         }
-
         registerReceiver(messageReceiver, IntentFilter(MESSAGE_ACTION))
     }
 
