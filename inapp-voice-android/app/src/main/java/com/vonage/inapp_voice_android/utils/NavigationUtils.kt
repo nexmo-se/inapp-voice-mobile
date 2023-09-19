@@ -7,6 +7,7 @@ import android.util.Log
 import com.vonage.clientcore.core.api.HangupReason
 import com.vonage.inapp_voice_android.views.CallActivity
 import com.vonage.inapp_voice_android.views.LoginActivity
+import com.vonage.inapp_voice_android.views.fragments.FragmentActiveCall
 
 
 internal fun LoginActivity.navigateToCallActivity(extras: Bundle? = null){
@@ -44,10 +45,17 @@ internal fun sendMessageToCallActivity(context: Context, extras: Bundle? = null)
     context.sendBroadcast(intent)
 }
 
-internal fun notifyIsMutedToCallActivity(context: Context, isMuted: Boolean){
+internal fun sendMessageToActiveCallFragment(context: Context, extras: Bundle? = null) {
+    val intent = Intent(FragmentActiveCall.MESSAGE_ACTION)
+    extras?.let {
+        intent.putExtras(it)
+    }
+    context.sendBroadcast(intent)
+}
+internal fun notifyIsMutedToActiveCallFragment(context: Context, isMuted: Boolean){
     val extras = Bundle()
-    extras.putBoolean(CallActivity.IS_MUTED, isMuted)
-    sendMessageToCallActivity(context, extras)
+    extras.putBoolean(FragmentActiveCall.IS_MUTED, isMuted)
+    sendMessageToActiveCallFragment(context, extras)
 }
 
 internal fun notifyCallAnsweredToCallActivity(context: Context) {

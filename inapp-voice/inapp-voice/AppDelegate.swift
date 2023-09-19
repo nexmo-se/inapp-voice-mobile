@@ -151,6 +151,7 @@ extension Notification.Name {
     static let handledCallData = Notification.Name("CallData")
     static let updateCallMembersStatus = Notification.Name("UpdateCallMembers")
     static let networkConnectionStatusChanged = Notification.Name("networkConnectionStatusChanged")
+    static let muteState = Notification.Name("muteState")
 }
 
 

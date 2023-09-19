@@ -48,7 +48,6 @@ class CallActivity : AppCompatActivity() {
 
     private var fallbackUsername: Username? = null
     private var currentState = CALL_DISCONNECTED
-    private var isMuteToggled = false
     private lateinit var logoutButton: Button
 
     /**
@@ -59,13 +58,6 @@ class CallActivity : AppCompatActivity() {
         override fun onReceive(context: Context?, intent: Intent?) {
             // Handle the messages here
 
-            // Call Is Muted Update
-            intent?.getBooleanExtra(IS_MUTED, false)?.let {
-                if (isMuteToggled != it) {
-                    // TODO: mute
-//                    toggleMute()
-                }
-            }
             // Call Remotely Disconnected
             intent?.getBooleanExtra(IS_REMOTE_DISCONNECT, false)?.let {
                 fallbackState = if (it) Connection.STATE_DISCONNECTED else null
@@ -284,14 +276,9 @@ class CallActivity : AppCompatActivity() {
         coreContext.sessionId = null
         logout()
     }
-//    private fun toggleMute() : Boolean{
-//        isMuteToggled = binding.btnMute.toggleButton(isMuteToggled)
-//        return isMuteToggled
-//    }
 
     companion object {
         const val MESSAGE_ACTION = "com.vonage.inapp_voice_android.MESSAGE_TO_CALL_ACTIVITY"
-        const val IS_MUTED = "isMuted"
         const val CALL_STATE = "callState"
         const val CALL_ANSWERED = "answered"
         const val CALL_STARTED = "started"

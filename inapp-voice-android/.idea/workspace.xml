@@ -16,22 +16,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4bb3e6f8-68e0-46e1-9283-bcfb58daf17b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../backend/public/vonage-inapp-voice.apk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deploymentTargetDropDown.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/vonage/inapp_voice_android/core/VoiceClientManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/vonage/inapp_voice_android/core/VoiceClientManager.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/vonage/inapp_voice_android/utils/NavigationUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/vonage/inapp_voice_android/utils/NavigationUtils.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/vonage/inapp_voice_android/views/CallActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/vonage/inapp_voice_android/views/CallActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../inapp-voice/Podfile" beforeDir="false" afterPath="$PROJECT_DIR$/../inapp-voice/Podfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../inapp-voice/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../inapp-voice/Podfile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/vonage/inapp_voice_android/views/LoginActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/vonage/inapp_voice_android/views/LoginActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/vonage/inapp_voice_android/views/fragments/FragmentActiveCall.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/vonage/inapp_voice_android/views/fragments/FragmentActiveCall.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_activecall.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_activecall.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../inapp-voice/inapp-voice.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/../inapp-voice/inapp-voice.xcodeproj/project.pbxproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../inapp-voice/inapp-voice.xcworkspace/xcuserdata/iujie.xcuserdatad/UserInterfaceState.xcuserstate" beforeDir="false" afterPath="$PROJECT_DIR$/../inapp-voice/inapp-voice.xcworkspace/xcuserdata/iujie.xcuserdatad/UserInterfaceState.xcuserstate" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../inapp-voice/inapp-voice/Manager/Vonage/VonageClient+VGProvider.swift" beforeDir="false" afterPath="$PROJECT_DIR$/../inapp-voice/inapp-voice/Manager/Vonage/VonageClient+VGProvider.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../inapp-voice/inapp-voice/AppDelegate.swift" beforeDir="false" afterPath="$PROJECT_DIR$/../inapp-voice/inapp-voice/AppDelegate.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../inapp-voice/inapp-voice/Controllers/CallViewController.swift" beforeDir="false" afterPath="$PROJECT_DIR$/../inapp-voice/inapp-voice/Controllers/CallViewController.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../inapp-voice/inapp-voice/Manager/Vonage/VonageClient+ProviderDelegate.swift" beforeDir="false" afterPath="$PROJECT_DIR$/../inapp-voice/inapp-voice/Manager/Vonage/VonageClient+ProviderDelegate.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../inapp-voice/inapp-voice/Manager/Vonage/VonageClient.swift" beforeDir="false" afterPath="$PROJECT_DIR$/../inapp-voice/inapp-voice/Manager/Vonage/VonageClient.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../inapp-voice/inapp-voice/Views/Base.lproj/Main.storyboard" beforeDir="false" afterPath="$PROJECT_DIR$/../inapp-voice/inapp-voice/Views/Base.lproj/Main.storyboard" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[/Users/iujie/.android/avd/Galaxy_Nexus_API_23.avd]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[5200c5135345255f]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -42,12 +54,7 @@
       <state>
         <projects_view>
           <tree_state>
-            <expand>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="inapp-voice-android" type="f1a62948:ProjectNode" />
-              </path>
-            </expand>
+            <expand />
             <select />
           </tree_state>
         </projects_view>
@@ -82,23 +89,22 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="PROJECT_TRUSTED_KEY" value="true" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="cidr.known.project.marker" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="memory.settings.postsync.last.time.stamp" value="1688957888766" />
-    <property name="project.structure.last.edited" value="Dependencies" />
-    <property name="project.structure.proportion" value="0.17" />
-    <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "cidr.known.project.marker": "true",
+    "last_opened_file_path": "/Users/iujie/Documents/demos/bolt-project/inapp-voice-ios/inapp-voice-android",
+    "memory.settings.postsync.last.time.stamp": "1695090351075"
+  }
+}]]></component>
   <component name="PsdUISettings">
     <option name="RESOLVED_DEPENDENCIES_MINIMIZE" value="true" />
     <option name="LAST_EDITED_BUILD_TYPE" value="release" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/src/main/res/drawable" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
@@ -111,7 +117,6 @@
       <option name="ALL_USERS" value="false" />
       <option name="ALWAYS_INSTALL_WITH_PM" value="false" />
       <option name="CLEAR_APP_STORAGE" value="false" />
-      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
       <option name="ACTIVITY_EXTRA_FLAGS" value="" />
       <option name="MODE" value="default_activity" />
       <option name="CLEAR_LOGCAT" value="false" />
@@ -127,6 +132,8 @@
         <option name="WORKING_DIR" value="" />
         <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
         <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
+        <option name="DEBUG_SANDBOX_SDK" value="false" />
       </Auto>
       <Hybrid>
         <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
@@ -134,14 +141,21 @@
         <option name="WORKING_DIR" value="" />
         <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
         <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
+        <option name="DEBUG_SANDBOX_SDK" value="false" />
       </Hybrid>
-      <Java />
+      <Java>
+        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
+        <option name="DEBUG_SANDBOX_SDK" value="false" />
+      </Java>
       <Native>
         <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
         <option name="SHOW_STATIC_VARS" value="true" />
         <option name="WORKING_DIR" value="" />
         <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
         <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
+        <option name="DEBUG_SANDBOX_SDK" value="false" />
       </Native>
       <Profilers>
         <option name="ADVANCED_PROFILING_ENABLED" value="false" />
@@ -150,7 +164,6 @@
         <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Java/Kotlin Method Sample (legacy)" />
         <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
         <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
-        <option name="PROFILING_MODE" value="NOT_SET" />
       </Profilers>
       <option name="DEEP_LINK" value="" />
       <option name="ACTIVITY_CLASS" value="" />

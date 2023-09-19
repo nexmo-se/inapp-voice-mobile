@@ -58,12 +58,16 @@ extension VonageClient: CXProviderDelegate {
         
         if (action.isMuted == true) {
             self.voiceClient.mute(action.callUUID.toVGCallID()) { error in
-                print("mute error")
+                if error == nil {
+                     self.isMuted = true
+                 }
             }
         }
         else {
             self.voiceClient.unmute(action.callUUID.toVGCallID()) { error in
-                print("unmute error")
+                if error == nil {
+                    self.isMuted = false
+                }
             }
         }
         action.fulfill()

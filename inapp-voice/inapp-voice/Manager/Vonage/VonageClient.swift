@@ -40,6 +40,12 @@ class VonageClient: NSObject {
         }
     }
     
+    var isMuted: Bool = false {
+          didSet {
+              NotificationCenter.default.post(name:.muteState, object: isMuted)
+          }
+      }
+    
     // Callkit
     var callProvider: CXProvider!
     var cxController = CXCallController()
@@ -253,6 +259,18 @@ class VonageClient: NSObject {
             }
         }
         
+    }
+    
+    func toggleMute(calluuid: UUID?) {
+        if let calluuid = calluuid {
+            let muteCallAction = CXSetMutedCallAction(call: calluuid, muted: !isMuted)
+            self.cxController.requestTransaction(with: muteCallAction) { error in
+                guard error == nil else {
+                    print("cx unmute error")
+                    return
+                }
+            }
+        }
     }
     
     func updateCallKit(call: CallStatusModel) {

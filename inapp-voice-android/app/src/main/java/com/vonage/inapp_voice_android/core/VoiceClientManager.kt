@@ -18,7 +18,7 @@ import com.vonage.inapp_voice_android.models.CallData
 import com.vonage.inapp_voice_android.push.PushNotificationService
 import com.vonage.inapp_voice_android.utils.*
 import com.vonage.inapp_voice_android.utils.notifyCallDisconnectedToCallActivity
-import com.vonage.inapp_voice_android.utils.notifyIsMutedToCallActivity
+import com.vonage.inapp_voice_android.utils.notifyIsMutedToActiveCallFragment
 import com.vonage.inapp_voice_android.utils.showToast
 import com.vonage.voice.api.VoiceClient
 import retrofit2.Call
@@ -134,7 +134,7 @@ class VoiceClientManager(private val context: Context) {
             // Update Active Call Mute State
             takeIfActive(callId)?.isMuted = isMuted
             // Notify Call Activity
-            notifyIsMutedToCallActivity(context, isMuted)
+            notifyIsMutedToActiveCallFragment(context, isMuted)
         }
 
         client.setOnDTMFListener { callId, legId, digits ->
@@ -184,7 +184,7 @@ class VoiceClientManager(private val context: Context) {
                 try {
                     coreContext.telecomHelper.startOutgoingCall(it, to)
                     notifyCallStartedToCallActivity(context)
-                    TimerManager.startTimer(TimerManager.CONNECTION_SERVICE_TIMER, 500){
+                    TimerManager.startTimer(TimerManager.CONNECTION_SERVICE_TIMER, 3000){
                         mockOutgoingConnection(it, to)
                     }
                 } catch (e: Exception){
@@ -215,7 +215,7 @@ class VoiceClientManager(private val context: Context) {
      *  and allow outgoing calls without interacting with the Telecom framework.
      */
     private fun mockOutgoingConnection(callId: CallId, to: String) : CallConnection {
-        showToast(context, "ConnectionService Not Available")
+//        showToast(context, "ConnectionService Not Available")
         CallData.callId = callId
         CallData.memberName = to
         CallData.memberLegId = null

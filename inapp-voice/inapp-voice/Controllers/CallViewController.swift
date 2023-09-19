@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class CallViewController: UIViewController {
     
@@ -23,9 +24,13 @@ class CallViewController: UIViewController {
     @IBOutlet weak var callMemberLabel: UILabel!
     @IBOutlet weak var callStatusLabel: UILabel!
     @IBOutlet weak var ringingStackView: UIStackView!
+
+    @IBOutlet weak var answeredStackView: UIStackView!
     @IBOutlet weak var answerButton: UIButton!
     @IBOutlet weak var rejectButton: UIButton!
     @IBOutlet weak var hangupButton: UIButton!
+    @IBOutlet weak var muteButton: UIButton!
+    @IBOutlet weak var speakerButton: UIButton!
     
     var user: UserModel!
     var userManager = UserManager()
@@ -55,6 +60,7 @@ class CallViewController: UIViewController {
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+
     }
     
     private func setupInitialView() {
@@ -66,6 +72,9 @@ class CallViewController: UIViewController {
         rejectButton.layer.cornerRadius = Constants.borderRadius
         callButton.layer.cornerRadius = Constants.borderRadius
         hangupButton.layer.cornerRadius = Constants.borderRadius
+        speakerButton.layer.cornerRadius = Constants.borderRadius
+        muteButton.layer.cornerRadius = Constants.borderRadius
+        displayMuteState(isMuted: appDelegate.vgclient.isMuted)
         
         // Initial View - Members
         memberSearchTextField.delegate = self
@@ -80,12 +89,23 @@ class CallViewController: UIViewController {
             self.updateCallStateUI(callStatus: callStatus)
         }
         
+        // display active audio output
+        displayActiveAudioOutput()
+
+        // display mute state
+        displayMuteState(isMuted: appDelegate.vgclient.isMuted)
+        
         // notification
         NotificationCenter.default.addObserver(self, selector: #selector(connectionStatusReceived(_:)), name: .clientStatus, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(callReceived(_:)), name: .callStatus, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateCallMembersStatus(_:)), name: .updateCallMembersStatus, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateMic(_:)), name: .muteState, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleAudioRouteChange), name: AVAudioSession.routeChangeNotification, object: nil)
+
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -115,7 +135,7 @@ class CallViewController: UIViewController {
             self!.activeCallStackView.isHidden = false
             
             self!.ringingStackView.isHidden = true
-            self!.hangupButton.isHidden = false
+            self!.answeredStackView.isHidden = false
             
             if (member != nil) {
                 self!.callMemberLabel.text = member
@@ -126,7 +146,7 @@ class CallViewController: UIViewController {
                 
                 if (type == .inbound) {
                     self!.ringingStackView.isHidden = false
-                    self!.hangupButton.isHidden = true
+                    self!.answeredStackView.isHidden = true
                 }
                 
             }
@@ -156,6 +176,8 @@ class CallViewController: UIViewController {
     
     private func disableActionButtons() {
         hangupButton.isEnabled = false
+        muteButton.isEnabled = false
+        speakerButton.isEnabled = false
         answerButton.isEnabled = false
         rejectButton.isEnabled = false
         callButton.isEnabled = false
@@ -163,9 +185,30 @@ class CallViewController: UIViewController {
     
     private func enableActionButton() {
         hangupButton.isEnabled = true
+        muteButton.isEnabled = true
+        speakerButton.isEnabled = true
         answerButton.isEnabled = true
         rejectButton.isEnabled = true
         callButton.isEnabled = true
+    }
+    
+    private func displayMuteState(isMuted: Bool) {
+           if (isMuted) {
+               muteButton.tintColor = .black
+           }
+           else {
+               muteButton.tintColor = .systemGray3
+           }
+    }
+    
+    private func displayActiveAudioOutput() {
+        let currentOutput = AVAudioSession.sharedInstance().currentRoute.outputs
+        if  (currentOutput.contains(where: {return $0.portType == AVAudioSession.Port.builtInSpeaker})) {
+            speakerButton.tintColor = .black
+        }
+        else {
+            speakerButton.tintColor = .systemGray3
+        }
     }
     
     private func logout() {
@@ -214,6 +257,19 @@ extension CallViewController {
             }
         }
     }
+    
+    @objc func updateMic(_ notification: NSNotification) {
+        if let isMuted = notification.object as? Bool {
+            DispatchQueue.main.async { [weak self] in
+                if (self == nil) {return}
+                self!.displayMuteState(isMuted: isMuted)
+            }
+        }
+    }
+    
+    @objc func handleAudioRouteChange(_ notification: NSNotification) {
+        displayActiveAudioOutput()
+    }
 }
 
 //MARK: Actions
@@ -247,6 +303,53 @@ extension CallViewController {
         disableActionButtons()
         appDelegate.vgclient.hangUpCall(callId: appDelegate.vgclient.currentCallStatus?.uuid?.toVGCallID())
     }
+    
+    @IBAction func muteClicked(_ sender: Any) {
+        appDelegate.vgclient.toggleMute(calluuid: appDelegate.vgclient.currentCallStatus?.uuid)
+    }
+    
+    @IBAction func speakerClicked(_ sender: Any) {
+        // Pull active audio output
+        let availableAudioPorts = AVAudioSession.sharedInstance().availableInputs
+        let currentOutput = AVAudioSession.sharedInstance().currentRoute.outputs
+                
+        if (currentOutput.contains(where: {return $0.portType == AVAudioSession.Port.builtInSpeaker})) {
+            // switch to bluetooth or headphone
+            do {
+                for audioPort in availableAudioPorts! {
+                    switch audioPort.portType {
+                    case AVAudioSession.Port.bluetoothA2DP, AVAudioSession.Port.bluetoothHFP, AVAudioSession.Port.bluetoothLE :
+                        try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.none)
+                        break
+                    case AVAudioSession.Port.headphones, AVAudioSession.Port.headsetMic:
+                        try AVAudioSession.sharedInstance().setPreferredInput(audioPort)
+                        break
+                    default:
+                        // remove speaker if needed
+                        try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.none)
+                        // set new input
+                        try AVAudioSession.sharedInstance().setPreferredInput(audioPort)
+                        break
+                    }
+                    speakerButton.tintColor = .systemGray3
+                }
+            }
+            catch {
+                print("\(String(describing: error))")
+            }
+        }
+    else {
+        // swifth to speaker
+        do {
+            try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
+            speakerButton.tintColor = .black
+            
+        } catch {
+            print("\(String(describing: error))")
+        }
+    }
+}
+    
     
     @IBAction func onLogoutButtonClicked(_ sender: Any) {
         logout()

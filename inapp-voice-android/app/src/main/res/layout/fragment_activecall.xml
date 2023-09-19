@@ -48,66 +48,59 @@
         app:layout_constraintTop_toBottomOf="@+id/tvTargetUser"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/btHangUp"
+        app:layout_constraintBottom_toTopOf="@+id/svCallActions"
         >
     </TextView>
-<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--        android:id="@+id/clIncomingCallAction"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/tvCallStatus"-->
-<!--        >-->
-<!--        <Button-->
-<!--            android:id="@+id/btAnswer"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="52dp"-->
-<!--            android:text="@string/answer"-->
-<!--            android:textSize="18sp"-->
-<!--            android:layout_marginEnd="8dp"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            android:textAllCaps="false"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:backgroundTint="@color/green"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toStartOf="@+id/btReject"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            />-->
-<!--        <Button-->
-<!--            android:id="@+id/btReject"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="52dp"-->
-<!--            android:text="@string/reject"-->
-<!--            android:textSize="18sp"-->
-<!--            android:layout_marginStart="8dp"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            android:textAllCaps="false"-->
-<!--            android:textColor="@color/white"-->
-<!--            android:backgroundTint="@color/red"-->
-<!--            app:layout_constraintStart_toEndOf="@+id/btAnswer"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            />-->
-<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-    <Button
-        android:id="@+id/btHangUp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/svCallActions"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:text="@string/hangup"
-        android:textSize="18sp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="16dp"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/red"
+        app:layout_constraintTop_toBottomOf="@+id/tvCallStatus"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCallStatus"
-        />
-
+        >
+        <Button
+            android:id="@+id/btMute"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:backgroundTint="@color/dark_gray"
+            android:layout_marginEnd="16dp"
+            android:visibility="gone"
+            android:drawableTop="@drawable/ic_baseline_mic_off_36"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btSpeaker"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+        <Button
+            android:id="@+id/btSpeaker"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:visibility="gone"
+            android:backgroundTint="@color/dark_gray"
+            android:layout_marginEnd="16dp"
+            android:drawableTop="@drawable/ic_baseline_volume_up_36"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btMute"
+            app:layout_constraintEnd_toStartOf="@+id/btHangUp"
+            />
+        <Button
+            android:id="@+id/btHangUp"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/red"
+            android:drawableTop="@drawable/ic_baseline_call_end_36"
+            android:layout_gravity="center_horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btSpeaker"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
