@@ -522,11 +522,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "inapp-voice/inapp-voice.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 54;
+				CURRENT_PROJECT_VERSION = 56;
 				DEVELOPMENT_TEAM = PR6C39UQ38;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "inapp-voice/Info.plist";
-				INFOPLIST_KEY_NSCalendarsUsageDescription = "Camera usage required";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera usage required";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Microphone access required in order to make and receive audio calls.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -556,11 +556,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "inapp-voice/inapp-voice.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 54;
+				CURRENT_PROJECT_VERSION = 56;
 				DEVELOPMENT_TEAM = PR6C39UQ38;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "inapp-voice/Info.plist";
-				INFOPLIST_KEY_NSCalendarsUsageDescription = "Camera usage required";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera usage required";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Microphone access required in order to make and receive audio calls.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
